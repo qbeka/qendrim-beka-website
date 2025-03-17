@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { gsap } from 'gsap';
-import { init, send } from 'emailjs-com';
+import emailjs from 'emailjs-com';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -9,27 +9,28 @@ const Contact = () => {
 
   useEffect(() => {
     gsap.from('.contact-form', { opacity: 0, y: 20, duration: 1 });
-
-    // Initialize EmailJS with public key
-    if (typeof window !== 'undefined') {
-      init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-    }
   }, []);
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Sending...');
 
     try {
-      await send(
+      // Send the email using EmailJS. Notice the public key is passed as the fourth parameter.
+      await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        formData
+        formData,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
       setStatus('Message sent!');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('EmailJS error:', error);
       setStatus('Failed to send message.');
     }
   };
@@ -47,7 +48,7 @@ const Contact = () => {
             name="name"
             placeholder="Your Name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            onChange={handleChange}
             required
           />
           <input
@@ -55,14 +56,14 @@ const Contact = () => {
             name="email"
             placeholder="Your Email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            onChange={handleChange}
             required
           />
           <textarea
             name="message"
             placeholder="Your Message"
             value={formData.message}
-            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            onChange={handleChange}
             required
           />
           <button type="submit">Send Message</button>
