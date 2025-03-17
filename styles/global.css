@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+  }
+  
+  header.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #111;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    color: #00aaff;
+  }
+  
+  .nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+  }
+  
+  .nav a:hover {
+    color: #00aaff;
+  }
+  
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .menu-toggle span {
+    height: 3px;
+    width: 25px;
+    background: #fff;
+    margin: 4px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .nav {
+      display: none;
+    }
+    .menu-toggle {
+      display: flex;
+    }
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  .intro {
+    text-align: center;
+    margin: 40px 0;
+  }
+  
+  .projects,
+  .blog,
+  .contact {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  .project-card,
+  .blog-post {
+    background: #222;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .project-card:hover,
+  .blog-post:hover {
+    transform: scale(1.02);
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+  }
+  
+  .contact-form button {
+    padding: 10px;
+    background: #00aaff;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background: #111;
+  }
+  
