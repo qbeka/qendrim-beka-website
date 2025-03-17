@@ -1,36 +1,38 @@
-import { useState, useEffect } from 'react'
-import Head from 'next/head'
-import { gsap } from 'gsap'
-import { init, send } from 'emailjs-com'
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { gsap } from 'gsap';
+import { init, send } from 'emailjs-com';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('')
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
-    gsap.from('.contact-form', { opacity: 0, y: 20, duration: 1 })
-    // Initialize EmailJS
+    gsap.from('.contact-form', { opacity: 0, y: 20, duration: 1 });
+
+    // Initialize EmailJS with public key
     if (typeof window !== 'undefined') {
-      init('YOUR_USER_ID')
+      init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
     }
-  }, [])
+  }, []);
 
-  const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Sending...');
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    setStatus('Sending...')
-    send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
-      .then(response => {
-        setStatus('Message sent!')
-        setFormData({ name: '', email: '', message: '' })
-      })
-      .catch(err => {
-        setStatus('Failed to send message.')
-      })
-  }
+    try {
+      await send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        formData
+      );
+      setStatus('Message sent!');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      setStatus('Failed to send message.');
+    }
+  };
 
   return (
     <>
@@ -45,7 +47,7 @@ const Contact = () => {
             name="name"
             placeholder="Your Name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
             required
           />
           <input
@@ -53,14 +55,14 @@ const Contact = () => {
             name="email"
             placeholder="Your Email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
             required
           />
           <textarea
             name="message"
             placeholder="Your Message"
             value={formData.message}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
             required
           />
           <button type="submit">Send Message</button>
@@ -68,7 +70,7 @@ const Contact = () => {
         </form>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
