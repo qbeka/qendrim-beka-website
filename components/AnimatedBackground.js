@@ -7,12 +7,12 @@ export default function AnimatedBackground() {
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
-  // Define your navigation stars
+  // Fixed navigation stars placed at the four corners
   const navigationStars = [
-    { x: "15%", y: "30%", text: "Projects", link: "/projects" },
-    { x: "60%", y: "50%", text: "About Me", link: "/involvement" },
-    { x: "35%", y: "80%", text: "Resume", link: "/resume" },
-    { x: "80%", y: "20%", text: "Contact", link: "/contact" }
+    { x: "5%", y: "5%", text: "Projects", link: "/projects" },
+    { x: "85%", y: "5%", text: "About Me", link: "/involvement" },
+    { x: "85%", y: "85%", text: "Resume", link: "/resume" },
+    { x: "5%", y: "85%", text: "Contact", link: "/contact" }
   ];
 
   useEffect(() => {
@@ -68,10 +68,10 @@ export default function AnimatedBackground() {
 
   return (
     <div className="animated-background-container">
-      {/* The canvas is behind everything, ignoring pointer events */}
+      {/* The canvas is behind everything and ignores pointer events */}
       <canvas ref={canvasRef} className="animated-background" />
-
-      {/* Container that holds the clickable stars above the canvas */}
+      
+      {/* Stars container on top so stars are always clickable */}
       <div className="stars-container">
         {navigationStars.map((star, index) => (
           <motion.div 
@@ -81,10 +81,10 @@ export default function AnimatedBackground() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: index * 0.2, duration: 0.5 }}
+            whileHover={{ scale: 1.3 }}
             onMouseEnter={() => setHoveredStar(index)}
             onMouseLeave={() => setHoveredStar(null)}
             onClick={() => router.push(star.link)}
-            whileHover={{ scale: 1.3 }}
           >
             {hoveredStar === index && (
               <span className="nav-text">{star.text}</span>
