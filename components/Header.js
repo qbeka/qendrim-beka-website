@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -11,7 +12,7 @@ const Header = () => {
       transition={{ duration: 1 }}
       className="header"
     >
-      <div className="logo">QB</div>
+      <div className="logo">Q<span style={{ color: '#00aaff' }}>B</span></div>
       <nav className={`nav ${menuOpen ? 'open' : ''}`}>
         <Link href="/"><a>About</a></Link>
         <Link href="/projects"><a>Projects</a></Link>
