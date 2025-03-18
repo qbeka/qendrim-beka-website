@@ -23,7 +23,8 @@ const Contact = () => {
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
-        message: formData.message
+        message: formData.message,
+        to_email: 'beka.qendrim1@gmail.com'  // Recipient email address for your messages
       };
 
       const response = await emailjs.send(
