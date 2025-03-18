@@ -1,9 +1,21 @@
-export default function Footer() {
-    return (
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} Qendrim Beka. All rights reserved.</p>
-        <p>Contact: <a href="mailto:qendrim@ualberta.ca">qendrim@ualberta.ca</a></p>
-      </footer>
-    )
-  }
-  
+import Link from 'next/link';
+
+export default function Header() {
+  return (
+    <header className="header">
+      <div className="logo">
+        Qendrim Beka
+      </div>
+      <nav>
+        <ul>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/involvement">Involvement</Link></li>
+          <li><Link href="/projects">Projects</Link></li>
+          <li><Link href="/resume">Resume</Link></li>
+          <li><Link href="/blog">Blog</Link></li>
+          <li><Link href="/contact">Contact</Link></li>
+        </ul>
+      </nav>
+    </header>
+  )
+}
