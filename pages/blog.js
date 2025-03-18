@@ -1,22 +1,16 @@
-import Head from 'next/head'
-import { useEffect } from 'react'
-import { gsap } from 'gsap'
+import Head from 'next/head';
+import { useEffect } from 'react';
+import { gsap } from 'gsap';
 
 const Blog = () => {
   useEffect(() => {
-    gsap.from('.blog-post', {
-      opacity: 0,
-      x: -50,
-      duration: 0.8,
-      stagger: 0.3
-    })
-  }, [])
+    gsap.from('.blog-post', { opacity: 0, x: -50, duration: 0.8, stagger: 0.3 });
+  }, []);
 
   const posts = [
-    { id: 1, title: 'My First Post', excerpt: 'A summary of my first post.' },
-    { id: 2, title: 'Another Update', excerpt: 'Some updates on my work.' },
-    { id: 3, title: 'Tech Thoughts', excerpt: 'Thoughts on the latest tech trends.' }
-  ]
+    { id: 1, title: 'Welcome to My Blog', excerpt: 'Updates and thoughts on technology.' },
+    { id: 2, title: 'Latest Trends in Blockchain', excerpt: 'Discussing current trends in blockchain.' }
+  ];
 
   return (
     <>
@@ -35,7 +29,7 @@ const Blog = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

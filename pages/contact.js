@@ -20,18 +20,24 @@ const Contact = () => {
     setStatus('Sending...');
 
     try {
-      // Send the email using EmailJS. Notice the public key is passed as the fourth parameter.
-      await emailjs.send(
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message
+      };
+
+      const response = await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        formData,
+        templateParams,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
+      console.log('EmailJS success:', response.text);
       setStatus('Message sent!');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('EmailJS error:', error);
-      setStatus('Failed to send message.');
+      setStatus(`Failed to send message: ${error.text || error}`);
     }
   };
 

@@ -1,10 +1,8 @@
-const Footer = () => {
-    return (
-      <footer className="footer">
-        <p>&copy; {new Date().getFullYear()} Qendrim Beka. All rights reserved.</p>
-      </footer>
-    )
-  }
+const Footer = () => (
+    <footer className="footer">
+      <p>&copy; {new Date().getFullYear()} Qendrim Beka. All rights reserved.</p>
+    </footer>
+  );
   
-  export default Footer
+  export default Footer;
   
