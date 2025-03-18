@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  
+
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
