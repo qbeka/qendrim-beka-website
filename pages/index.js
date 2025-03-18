@@ -1,5 +1,4 @@
 import AnimatedBackground from '../components/AnimatedBackground';
-import AnimatedText from '../components/AnimatedText';
 import { motion } from 'framer-motion';
 
 export default function Home() {
