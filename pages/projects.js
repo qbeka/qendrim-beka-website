@@ -1,26 +1,23 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { gsap } from 'gsap';
+import { motion } from 'framer-motion';
+import AnimatedBackground from '../components/AnimatedBackground';
+import ProjectCard from '../components/ProjectCard';
 
 const Projects = () => {
-  useEffect(() => {
-    gsap.from('.project-card', { opacity: 0, scale: 0.8, duration: 0.8, stagger: 0.2 });
-  }, []);
-
   const projects = [
     {
       id: 1,
       title: 'Decentralized US Election Voting Simulation System',
-      description: 'A blockchain-based voting simulation that visualizes US election predictions in real time. It features an interactive US map and logs over 2500 simulated votes.',
-      link: 'https://github.com/qbeka/us-2024-election-sim',
-      technologies: 'Python, Node.js, React, D3.js'
+      description: 'An advanced blockchain-driven voting simulation that visualizes US election predictions in real-time, ensuring transparency and accuracy in voting outcomes. This project integrates decentralized ledgers to prevent election fraud while providing interactive data visualizations.',
+      technologies: 'Python, Node.js, React, D3.js, Ethereum Smart Contracts',
+      link: 'https://github.com/qbeka/us-2024-election-sim'
     },
     {
       id: 2,
-      title: 'NeuroNavScore',
-      description: 'A VR-based navigation system with EEG integration for early Alzheimer’s detection. Winner of natHACKS2024 with $4,000 seed funding.',
-      link: 'https://github.com/NeuroNavScore/hackathon2024',
-      technologies: 'Unity, Python, C#, Brainflow, OpenBCI'
+      title: 'NeuroNavScore - AI-Assisted Navigation for Alzheimer’s Detection',
+      description: 'Developed a VR-based navigation system using EEG data to analyze cognitive function and detect early Alzheimer’s symptoms. The project combines brainwave pattern analysis with real-time AI models to provide personalized cognitive assessments.',
+      technologies: 'Unity, Python, C#, Brainflow, OpenBCI, Machine Learning',
+      link: 'https://github.com/NeuroNavScore/hackathon2024'
     }
   ];
 
@@ -29,19 +26,20 @@ const Projects = () => {
       <Head>
         <title>Qendrim Beka | Projects</title>
       </Head>
-      <section className="projects">
+      <AnimatedBackground />
+      <motion.section 
+        className="projects"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         <h2>Projects</h2>
         <div className="projects-container">
           {projects.map(project => (
-            <div key={project.id} className="project-card">
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <p><strong>Technologies:</strong> {project.technologies}</p>
-              <a href={project.link} target="_blank" rel="noopener noreferrer">View on GitHub</a>
-            </div>
+            <ProjectCard key={project.id} {...project} />
           ))}
         </div>
-      </section>
+      </motion.section>
     </>
   );
 };
