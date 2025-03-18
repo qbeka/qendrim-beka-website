@@ -1,19 +1,29 @@
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 
 export default function AnimatedBackground() {
   const canvasRef = useRef(null);
+  const router = useRouter();
+  let stars = [];
+
+  // Define interactive navigation stars
+  const navigationStars = [
+    { x: 20, y: 30, text: "Projects", link: "/projects" },
+    { x: 60, y: 50, text: "About Me", link: "/involvement" },
+    { x: 30, y: 80, text: "Resume", link: "/resume" },
+    { x: 80, y: 20, text: "Contact", link: "/contact" }
+  ];
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let stars = [];
-    const numStars = 100;
 
-    // Initialize stars with a base alpha and a flicker speed
+    // Create random stars
     const createStars = () => {
       stars = [];
-      for (let i = 0; i < numStars; i++) {
+      for (let i = 0; i < 100; i++) {
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
@@ -36,15 +46,17 @@ export default function AnimatedBackground() {
 
     const animate = (time) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Flickering stars
       stars.forEach(star => {
-        // Calculate flickering alpha using a sine wave
         const flicker = Math.sin(time * star.flickerSpeed + star.phase);
-        const alpha = star.baseAlpha + flicker * 0.2; // small variation
+        const alpha = star.baseAlpha + flicker * 0.2;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.2, Math.min(1, alpha))})`;
         ctx.fill();
       });
+
       requestAnimationFrame(animate);
     };
     animate(0);
@@ -52,5 +64,25 @@ export default function AnimatedBackground() {
     return () => window.removeEventListener('resize', resizeCanvas);
   }, []);
 
-  return <canvas ref={canvasRef} className="animated-background" />;
+  return (
+    <div className="animated-background-container">
+      <canvas ref={canvasRef} className="animated-background" />
+      
+      {/* Interactive Stars for Navigation */}
+      {navigationStars.map((star, index) => (
+        <motion.div 
+          key={index}
+          className="nav-star"
+          style={{ top: `${star.y}%`, left: `${star.x}%` }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: index * 0.3, duration: 0.5 }}
+          whileHover={{ scale: 1.3 }}
+          onClick={() => router.push(star.link)}
+        >
+          <span className="nav-text">{star.text}</span>
+        </motion.div>
+      ))}
+    </div>
+  );
 }
