@@ -7,6 +7,7 @@ export default function AnimatedBackground() {
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
+  // Define your navigation stars
   const navigationStars = [
     { x: "15%", y: "30%", text: "Projects", link: "/projects" },
     { x: "60%", y: "50%", text: "About Me", link: "/involvement" },
@@ -48,6 +49,7 @@ export default function AnimatedBackground() {
     const animate = (time) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Flickering stars
       stars.forEach(star => {
         const flicker = Math.sin(time * star.flickerSpeed + star.phase);
         const alpha = star.baseAlpha + flicker * 0.2;
@@ -66,25 +68,30 @@ export default function AnimatedBackground() {
 
   return (
     <div className="animated-background-container">
+      {/* The canvas is behind everything, ignoring pointer events */}
       <canvas ref={canvasRef} className="animated-background" />
-      
-      {/* Interactive Navigation Stars */}
-      {navigationStars.map((star, index) => (
-        <motion.div 
-          key={index}
-          className="nav-star"
-          style={{ top: star.y, left: star.x }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: index * 0.2, duration: 0.5 }}
-          whileHover={{ scale: 1.3 }}
-          onMouseEnter={() => setHoveredStar(index)}
-          onMouseLeave={() => setHoveredStar(null)}
-          onClick={() => router.push(star.link)}
-        >
-          {hoveredStar === index && <span className="nav-text">{star.text}</span>}
-        </motion.div>
-      ))}
+
+      {/* Container that holds the clickable stars above the canvas */}
+      <div className="stars-container">
+        {navigationStars.map((star, index) => (
+          <motion.div 
+            key={index}
+            className="nav-star"
+            style={{ top: star.y, left: star.x }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: index * 0.2, duration: 0.5 }}
+            onMouseEnter={() => setHoveredStar(index)}
+            onMouseLeave={() => setHoveredStar(null)}
+            onClick={() => router.push(star.link)}
+            whileHover={{ scale: 1.3 }}
+          >
+            {hoveredStar === index && (
+              <span className="nav-text">{star.text}</span>
+            )}
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
