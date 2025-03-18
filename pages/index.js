@@ -1,28 +1,55 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedBackground from '../components/AnimatedBackground';
-import { motion } from 'framer-motion';
 
 export default function Home() {
+  const [showStars, setShowStars] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowStars(true);
+      } else {
+        setShowStars(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="home-container">
-      <AnimatedBackground />
-      <div className="hero-content">
-        <motion.h1 
-          className="hero-title"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Qendrim Beka
-        </motion.h1>
-        <motion.p 
-          className="hero-subtitle"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          Computing Science & Blockchain Enthusiast
-        </motion.p>
-      </div>
+      <AnimatedBackground showStars={showStars} />
+      <AnimatePresence>
+        {!showStars && (
+          <motion.div
+            className="hero-content"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <motion.h1
+              className="hero-title"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              Qendrim Beka
+            </motion.h1>
+            <motion.p
+              className="hero-subtitle"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              Computing Science &amp; Blockchain Enthusiast
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

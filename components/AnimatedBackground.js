@@ -2,23 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
-// Create variants for drifting animation around a base position.
-// Note: We assume the base values are percentages (as strings, e.g., "15%").
+// Improved variants for drifting animation using proper math calculations
 const navStarVariants = (baseX, baseY) => ({
   animate: {
     top: [
-      `${baseY}`,
+      baseY,
       `${parseFloat(baseY) + 5}%`,
-      `${baseY}`,
+      baseY,
       `${parseFloat(baseY) - 5}%`,
-      `${baseY}`
+      baseY
     ],
     left: [
-      `${baseX}`,
+      baseX,
       `${parseFloat(baseX) + 5}%`,
-      `${baseX}`,
+      baseX,
       `${parseFloat(baseX) - 5}%`,
-      `${baseX}`
+      baseX
     ],
   },
   transition: {
@@ -29,19 +28,19 @@ const navStarVariants = (baseX, baseY) => ({
   },
 });
 
-export default function AnimatedBackground() {
+export default function AnimatedBackground({ showStars }) {
   const canvasRef = useRef(null);
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
-  // Navigation stars with extra buttons for Blog and Home.
+  // Navigation stars (drifting buttons) for all pages
   const navigationStars = [
-    { x: "15%", y: "30%", text: "Projects", link: "/projects" },
-    { x: "60%", y: "40%", text: "About Me", link: "/involvement" },
-    { x: "85%", y: "75%", text: "Resume", link: "/resume" },
-    { x: "10%", y: "80%", text: "Contact", link: "/contact" },
-    { x: "80%", y: "10%", text: "Blog", link: "/blog" },
-    { x: "50%", y: "5%", text: "Home", link: "/" }
+    { x: "10%", y: "20%", text: "Blog", link: "/blog" },
+    { x: "30%", y: "40%", text: "About Me", link: "/about" },
+    { x: "50%", y: "60%", text: "Contact", link: "/contact" },
+    { x: "70%", y: "30%", text: "Projects", link: "/projects" },
+    { x: "80%", y: "70%", text: "Involvement", link: "/involvement" },
+    { x: "5%",  y: "80%", text: "Home", link: "/" }
   ];
 
   useEffect(() => {
@@ -95,25 +94,27 @@ export default function AnimatedBackground() {
   return (
     <div className="animated-background-container">
       <canvas ref={canvasRef} className="animated-background" />
-      <div className="stars-container">
-        {navigationStars.map((star, index) => (
-          <motion.div 
-            key={index}
-            className="nav-star"
-            style={{ top: star.y, left: star.x }}
-            initial={{ opacity: 0 }}
-            animate={navStarVariants(star.x, star.y).animate}
-            transition={navStarVariants(star.x, star.y).transition}
-            onMouseEnter={() => setHoveredStar(index)}
-            onMouseLeave={() => setHoveredStar(null)}
-            onClick={() => router.push(star.link)}
-          >
-            {hoveredStar === index && (
-              <span className="nav-text">{star.text}</span>
-            )}
-          </motion.div>
-        ))}
-      </div>
+      {showStars && (
+        <div className="stars-container">
+          {navigationStars.map((star, index) => (
+            <motion.div
+              key={index}
+              className="nav-star"
+              style={{ top: star.y, left: star.x }}
+              initial={{ opacity: 0 }}
+              animate={navStarVariants(star.y, star.x).animate}
+              transition={navStarVariants(star.y, star.x).transition}
+              onMouseEnter={() => setHoveredStar(index)}
+              onMouseLeave={() => setHoveredStar(null)}
+              onClick={() => router.push(star.link)}
+            >
+              {hoveredStar === index && (
+                <span className="nav-text">{star.text}</span>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
