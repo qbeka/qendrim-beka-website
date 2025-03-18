@@ -5,42 +5,42 @@ export default function AnimatedBackground() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let stars = [];
     const numStars = 100;
 
-    const createStars = () => {
-      stars = [];
-      for (let i = 0; i < numStars; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.2,
-          alpha: Math.random()
-        });
-      }
-    };
+    function createStars() {
+      stars = Array.from({ length: numStars }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        alpha: Math.random(),
+        flickerSpeed: Math.random() * 0.02
+      }));
+    }
 
-    const resizeCanvas = () => {
+    function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       createStars();
-    };
+    }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    const animate = () => {
+    function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach(star => {
+        star.alpha += star.flickerSpeed * (Math.random() > 0.5 ? 1 : -1);
+        if (star.alpha < 0.3 || star.alpha > 1) star.flickerSpeed *= -1;
+
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
         ctx.fill();
       });
       requestAnimationFrame(animate);
-    };
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
     animate();
 
     return () => window.removeEventListener('resize', resizeCanvas);
