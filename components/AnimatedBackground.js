@@ -2,21 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
-// Improved variants for drifting animation using proper math calculations
+// Drift variants based on base positions (in percentages)
 const navStarVariants = (baseX, baseY) => ({
   animate: {
     top: [
       baseY,
-      `${parseFloat(baseY) + 5}%`,
+      `${parseFloat(baseY)}% + 5%`,
       baseY,
-      `${parseFloat(baseY) - 5}%`,
+      `${parseFloat(baseY)}% - 5%`,
       baseY
     ],
     left: [
       baseX,
-      `${parseFloat(baseX) + 5}%`,
+      `${parseFloat(baseX)}% + 5%`,
       baseX,
-      `${parseFloat(baseX) - 5}%`,
+      `${parseFloat(baseX)}% - 5%`,
       baseX
     ],
   },
@@ -33,7 +33,7 @@ export default function AnimatedBackground({ showStars }) {
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
-  // Navigation stars (drifting buttons) for all pages
+  // Navigation stars for Blog, About Me, Contact, Projects, Involvement, and Home.
   const navigationStars = [
     { x: "10%", y: "20%", text: "Blog", link: "/blog" },
     { x: "30%", y: "40%", text: "About Me", link: "/about" },
@@ -102,8 +102,8 @@ export default function AnimatedBackground({ showStars }) {
               className="nav-star"
               style={{ top: star.y, left: star.x }}
               initial={{ opacity: 0 }}
-              animate={navStarVariants(star.y, star.x).animate}
-              transition={navStarVariants(star.y, star.x).transition}
+              animate={navStarVariants(star.x, star.y).animate}
+              transition={navStarVariants(star.x, star.y).transition}
               onMouseEnter={() => setHoveredStar(index)}
               onMouseLeave={() => setHoveredStar(null)}
               onClick={() => router.push(star.link)}

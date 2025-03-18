@@ -86,8 +86,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 100; 
-  pointer-events: none; /* individual stars override */
+  z-index: 100;
+  /* Allow pointer events here so stars are clickable */
 }
 
 /* Interactive Navigation Stars */
