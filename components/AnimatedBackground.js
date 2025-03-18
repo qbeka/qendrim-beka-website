@@ -2,17 +2,46 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
+// Create variants for drifting animation around a base position.
+// Note: We assume the base values are percentages (as strings, e.g., "15%").
+const navStarVariants = (baseX, baseY) => ({
+  animate: {
+    top: [
+      `${baseY}`,
+      `${parseFloat(baseY) + 5}%`,
+      `${baseY}`,
+      `${parseFloat(baseY) - 5}%`,
+      `${baseY}`
+    ],
+    left: [
+      `${baseX}`,
+      `${parseFloat(baseX) + 5}%`,
+      `${baseX}`,
+      `${parseFloat(baseX) - 5}%`,
+      `${baseX}`
+    ],
+  },
+  transition: {
+    duration: 10,
+    ease: "easeInOut",
+    repeat: Infinity,
+    repeatType: "mirror",
+  },
+});
+
 export default function AnimatedBackground() {
   const canvasRef = useRef(null);
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
-  // Fixed navigation stars placed at the four corners
+  // Navigation stars with extra buttons for Blog and Home.
   const navigationStars = [
-    { x: "5%", y: "5%", text: "Projects", link: "/projects" },
-    { x: "85%", y: "5%", text: "About Me", link: "/involvement" },
-    { x: "85%", y: "85%", text: "Resume", link: "/resume" },
-    { x: "5%", y: "85%", text: "Contact", link: "/contact" }
+    { x: "15%", y: "30%", text: "Projects", link: "/projects" },
+    { x: "60%", y: "40%", text: "About Me", link: "/involvement" },
+    { x: "85%", y: "75%", text: "Resume", link: "/resume" },
+    { x: "10%", y: "80%", text: "Contact", link: "/contact" },
+    { x: "80%", y: "10%", text: "Blog", link: "/blog" },
+    { x: "50%", y: "5%", text: "Home", link: "/" }
   ];
 
   useEffect(() => {
@@ -48,8 +77,6 @@ export default function AnimatedBackground() {
 
     const animate = (time) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Flickering stars
       stars.forEach(star => {
         const flicker = Math.sin(time * star.flickerSpeed + star.phase);
         const alpha = star.baseAlpha + flicker * 0.2;
@@ -58,7 +85,6 @@ export default function AnimatedBackground() {
         ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.2, Math.min(1, alpha))})`;
         ctx.fill();
       });
-
       requestAnimationFrame(animate);
     };
     animate(0);
@@ -68,10 +94,7 @@ export default function AnimatedBackground() {
 
   return (
     <div className="animated-background-container">
-      {/* The canvas is behind everything and ignores pointer events */}
       <canvas ref={canvasRef} className="animated-background" />
-      
-      {/* Stars container on top so stars are always clickable */}
       <div className="stars-container">
         {navigationStars.map((star, index) => (
           <motion.div 
@@ -79,9 +102,8 @@ export default function AnimatedBackground() {
             className="nav-star"
             style={{ top: star.y, left: star.x }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: index * 0.2, duration: 0.5 }}
-            whileHover={{ scale: 1.3 }}
+            animate={navStarVariants(star.x, star.y).animate}
+            transition={navStarVariants(star.x, star.y).transition}
             onMouseEnter={() => setHoveredStar(index)}
             onMouseLeave={() => setHoveredStar(null)}
             onClick={() => router.push(star.link)}
