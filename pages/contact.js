@@ -1,31 +1,33 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const formRef = useRef(null);
   const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  useEffect(() => {
+    // Initialize EmailJS using the public key from environment variables
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Sending...');
 
     try {
-      await emailjs.send(
+      const response = await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        { ...formData, to_email: 'beka.qendrim1@gmail.com' },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        formRef.current
       );
-      setStatus('Message sent!');
-      setFormData({ name: '', email: '', message: '' });
+      console.log('SUCCESS!', response.status, response.text);
+      setStatus('Message sent successfully!');
+      formRef.current.reset();
     } catch (error) {
-      setStatus('Failed to send message.');
+      console.error('FAILED...', error);
+      setStatus(`Failed to send message: ${error.text || 'Unknown error'}`);
     }
   };
 
@@ -33,6 +35,12 @@ const Contact = () => {
     <>
       <Head>
         <title>Qendrim Beka | Contact</title>
+        {/* The CDN script is optional when using the npm package, 
+            but can be kept for fallback if needed */}
+        <script 
+          type="text/javascript" 
+          src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+        </script>
       </Head>
       <motion.section
         className="contact"
@@ -41,10 +49,15 @@ const Contact = () => {
         transition={{ duration: 1 }}
       >
         <h2>Contact Me</h2>
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
-          <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
-          <textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} required />
+        <form 
+          ref={formRef} 
+          id="contact-form" 
+          className="contact-form" 
+          onSubmit={handleSubmit}
+        >
+          <input type="text" name="from_name" placeholder="Your Name" required />
+          <input type="email" name="from_email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Your Message" required />
           <button type="submit">Send Message</button>
           <p>{status}</p>
         </form>
