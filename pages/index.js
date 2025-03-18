@@ -50,6 +50,8 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Extra spacer to allow scrolling */}
+      <div className="scroll-spacer"></div>
     </div>
   );
 }
