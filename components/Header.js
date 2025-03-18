@@ -1,10 +1,16 @@
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="header">
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="header"
+    >
       <div className="logo">QB</div>
       <nav className={`nav ${menuOpen ? 'open' : ''}`}>
         <Link href="/"><a>About</a></Link>
@@ -19,7 +25,7 @@ const Header = () => {
         <span></span>
         <span></span>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
