@@ -19,7 +19,7 @@ const Blog = () => {
       </Head>
       <section className="blog">
         <h2>Blog</h2>
-        <div className="blog-container">
+        <div className="content-container">
           {posts.map(post => (
             <div key={post.id} className="blog-post">
               <h3>{post.title}</h3>

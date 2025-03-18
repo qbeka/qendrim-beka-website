@@ -1,12 +1,14 @@
-import Header from './Header';
-import Footer from './Footer';
+import Header from './Header'
+import Footer from './Footer'
+import AnimatedBackground from './AnimatedBackground'
 
-const Layout = ({ children }) => (
-  <>
-    <Header />
-    <main>{children}</main>
-    <Footer />
-  </>
-);
-
-export default Layout;
+export default function Layout({ children }) {
+  return (
+    <div className="layout">
+      <AnimatedBackground />
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </div>
+  )
+}

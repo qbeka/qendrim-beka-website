@@ -1,15 +1,16 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-const AnimatedText = ({ text }) => {
-  return (
-    <motion.h2
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 2 }}
-    >
-      {text}
-    </motion.h2>
-  );
-};
-
-export default AnimatedText;
+export default function AnimatedText({ text }) {
+  const [displayedText, setDisplayedText] = useState('');
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(prev => prev + text[index]);
+      index++;
+      if (index >= text.length) clearInterval(interval);
+    }, 50);
+    return () => clearInterval(interval);
+  }, [text]);
+  
+  return <h1>{displayedText}</h1>;
+}

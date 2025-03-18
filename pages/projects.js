@@ -1,73 +1,45 @@
-import Head from 'next/head';
-import { motion, AnimatePresence } from 'framer-motion';
-import AnimatedBackground from '../components/AnimatedBackground';
-import { useState } from 'react';
+import ProjectCard from '../components/ProjectCard'
 
-const Projects = () => {
-  const [expandedProject, setExpandedProject] = useState(null);
+const projects = [
+  {
+    title: "ASL-Gesture-Recognition",
+    description: "A computer vision system for live gesture recognition. The project covers the entire pipeline—from data collection to real-time recognition—using Python to drive machine learning and image processing algorithms.",
+    technologies: ["Python"],
+    link: "https://github.com/qbeka/ASL-Gesture-Recognition"
+  },
+  {
+    title: "Matrix-Calculator",
+    description: "An augmented matrix calculator that converts matrices to REF, RREF, calculates inverses, and computes a system of elementary matrices. Built with Python, it provides a practical tool for learning linear algebra.",
+    technologies: ["Python"],
+    link: "https://github.com/qbeka/Matrix-Calculator"
+  },
+  {
+    title: "rockpaperscissors",
+    description: "A gesture-controlled Rock Paper Scissors game that uses AI and computer vision. This interactive project detects hand gestures in real time with Python, delivering a fun and engaging user experience.",
+    technologies: ["Python"],
+    link: "https://github.com/qbeka/rockpaperscissors"
+  },
+  {
+    title: "Landmarks",
+    description: "An open-source spatial navigation experiment framework for Unity3D. Forked from mjstarrett/Landmarks, this project uses C# to explore spatial navigation concepts within simulated environments.",
+    technologies: ["C#"],
+    link: "https://github.com/qbeka/Landmarks"
+  },
+  {
+    title: "us-2024-election-sim",
+    description: "A dynamic simulation of the 2024 U.S. Presidential Election featuring a real-time interactive map, live vote logs, and a mock blockchain voting system. The project visualizes state-by-state predictions and logs over 2500 votes using Python, Node.js, React, and D3.js.",
+    technologies: ["Python", "Node.js", "React", "D3.js"],
+    link: "https://github.com/qbeka/us-2024-election-sim"
+  },
+]
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Decentralized US Election Voting System',
-      description: 'A blockchain-driven real-time voting system.',
-      technologies: 'Python, Node.js, React, D3.js, Ethereum Smart Contracts',
-      details: "This project provides an end-to-end election simulation using smart contracts to prevent fraud while allowing real-time visualization of electoral votes."
-    },
-    {
-      id: 2,
-      title: 'NeuroNavScore - AI-Assisted Alzheimer’s Detection',
-      description: 'EEG-powered navigation tool for cognitive analysis.',
-      technologies: 'Unity, Python, C#, Brainflow, OpenBCI, Machine Learning',
-      details: "Using VR and AI, this tool assesses cognitive function by analyzing brainwave patterns during navigation tasks, predicting potential cognitive decline."
-    }
-  ];
-
+export default function Projects() {
   return (
-    <>
-      <Head>
-        <title>Qendrim Beka | Projects</title>
-      </Head>
-      <AnimatedBackground />
-      <motion.section 
-        className="projects"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <h2>Projects</h2>
-        <div className="projects-container">
-          {projects.map(project => (
-            <motion.div 
-              key={project.id} 
-              className="project-card"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
-            >
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <p><strong>Technologies:</strong> {project.technologies}</p>
-
-              <AnimatePresence>
-                {expandedProject === project.id && (
-                  <motion.div 
-                    className="expanded-content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <p>{project.details}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-    </>
-  );
-};
-
-export default Projects;
+    <div className="projects-container">
+      <h1>Projects</h1>
+      {projects.map((project, index) => (
+        <ProjectCard key={index} project={project} />
+      ))}
+    </div>
+  )
+}
