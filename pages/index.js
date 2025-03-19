@@ -1,53 +1,46 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import AnimatedBackground from '../components/AnimatedBackground';
+import { useState, useEffect, useRef } from 'react';
+import Head from 'next/head';
+import '../global.css';
 
 export default function Home() {
   const [showStars, setShowStars] = useState(false);
+  const titleRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowStars(window.scrollY > 50);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When the title is no longer in view, show the stars.
+        setShowStars(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    if (titleRef.current) {
+      observer.observe(titleRef.current);
+    }
+
+    return () => {
+      if (titleRef.current) observer.unobserve(titleRef.current);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="home-container">
-      <AnimatedBackground showStars={showStars} />
-      <AnimatePresence>
-        {!showStars && (
-          <motion.div
-            className="hero-content"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <motion.h1
-              className="hero-title"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-            >
-              Qendrim Beka
-            </motion.h1>
-            <motion.p
-              className="hero-subtitle"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-            >
-              Computing Science &amp; Blockchain Enthusiast
-            </motion.p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* Extra spacer to allow scrolling */}
-      <div className="scroll-spacer"></div>
-    </div>
+    <>
+      <Head>
+        <title>Landing Page</title>
+      </Head>
+      <div className="home-container">
+        <div className="hero-content">
+          <h1 className="hero-title" ref={titleRef}>Welcome to Our Site</h1>
+          <p className="hero-subtitle">Scroll down to explore</p>
+        </div>
+        <div className={`stars-container ${showStars ? 'visible' : ''}`}>
+          <button className="nav-star" style={{ top: '20%', left: '10%' }}>★</button>
+          <button className="nav-star" style={{ top: '50%', left: '50%' }}>★</button>
+          <button className="nav-star" style={{ top: '70%', left: '80%' }}>★</button>
+        </div>
+        <div className="scroll-spacer"></div>
+      </div>
+    </>
   );
 }

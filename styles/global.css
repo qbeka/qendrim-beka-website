@@ -87,7 +87,14 @@ body {
   width: 100%;
   height: 100%;
   z-index: 100;
-  /* Removed pointer-events: none so that stars are clickable */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* disable interaction when hidden */
+}
+
+.stars-container.visible {
+  opacity: 1;
+  pointer-events: auto; /* enable interaction */
 }
 
 /* Interactive Navigation Stars */
@@ -101,7 +108,6 @@ body {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   cursor: pointer;
   z-index: 101;
-  pointer-events: auto;
 }
 
 .nav-star:hover {
