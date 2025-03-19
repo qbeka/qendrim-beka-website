@@ -9,9 +9,29 @@
   --input-bg: #1a1a1a;
   --input-border: #333;
   --star-hover-glow: rgba(0, 170, 255, 1);
-  --star-size: 30px; /* Increased size for clearer buttons */
+  --star-size: 30px;
 }
 
+/* Layout */
+.layout-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Content Wrapper (scrollable with fade transition) */
+.content-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  z-index: 1;
+  padding: 20px;
+}
+
+/* Base Styles */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -20,21 +40,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Remove header completely (if you have a .header class) */
-.header {
-  display: none;
-}
-
-/* Home Page */
+/* Home Page Specific */
 .home-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
   text-align: center;
-  padding: 0 20px;
 }
 
 .hero-content {
@@ -56,47 +64,31 @@ body {
   text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
 }
 
-/* Extra Spacer for Scrolling */
+/* Scroll Spacer to allow content scrolling */
 .scroll-spacer {
   height: 150vh;
 }
 
 /* Animated Background */
-.animated-background-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .animated-background {
   position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* allow clicks to pass through */
+  pointer-events: none;
   z-index: -1;
 }
 
-/* Stars Container */
+/* Star Navigation */
 .stars-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 100;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none; /* disable interaction when hidden */
+  z-index: 2;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.stars-container.visible {
-  opacity: 1;
-  pointer-events: auto; /* enable interaction */
-}
-
-/* Star Link Container (for label + star) */
 .star-link {
   position: absolute;
   display: flex;
@@ -117,16 +109,15 @@ body {
   display: block;
 }
 
-/* Interactive Navigation Stars */
 .nav-star {
   width: var(--star-size);
   height: var(--star-size);
   background: radial-gradient(circle, var(--accent-color) 30%, #ffffff 70%);
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 170, 255, 0.7);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   cursor: pointer;
-  z-index: 101;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,17 +129,17 @@ body {
   transform: scale(1.4);
 }
 
-/* Projects, Involvement, etc. */
+/* Content Containers (for inner pages) */
 .content-container {
   padding: 60px 20px;
   max-width: 900px;
   margin: 0 auto;
 }
 
+/* Projects List */
 .projects-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 30px;
   padding: 40px 20px;
 }
@@ -159,10 +150,10 @@ body {
   padding: 20px;
   border-radius: 10px;
   transition: transform var(--transition-duration) ease-in-out,
-    box-shadow var(--transition-duration) ease-in-out;
+              box-shadow var(--transition-duration) ease-in-out;
   cursor: pointer;
-  width: 100%;
   max-width: 600px;
+  margin: 0 auto;
 }
 
 .project-card:hover {
@@ -247,13 +238,11 @@ body {
   outline: none;
 }
 
-/* Textarea */
 .contact-textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-/* Submit Button */
 .contact-button {
   padding: 12px 20px;
   border: none;
@@ -263,7 +252,8 @@ body {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out,
+              box-shadow 0.3s ease-in-out;
   box-shadow: 0 0 12px rgba(0, 170, 255, 0.5);
   text-transform: uppercase;
 }
