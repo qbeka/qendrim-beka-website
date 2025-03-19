@@ -12,25 +12,6 @@
   --star-size: 30px;
 }
 
-/* Layout */
-.layout-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Content Wrapper (scrollable with fade transition) */
-.content-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-  z-index: 1;
-  padding: 20px;
-}
-
 /* Base Styles */
 body {
   margin: 0;
@@ -40,11 +21,22 @@ body {
   overflow-x: hidden;
 }
 
-/* Home Page Specific */
-.home-container {
-  text-align: center;
+/* Remove header if exists */
+.header {
+  display: none;
 }
 
+/* Layout & Content Containers */
+.layout-container {
+  position: relative;
+  z-index: 1;
+}
+
+.content-container {
+  padding: 20px;
+}
+
+/* Hero Section (Landing Page) */
 .hero-content {
   margin-top: 100px;
 }
@@ -64,12 +56,20 @@ body {
   text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
 }
 
-/* Scroll Spacer to allow content scrolling */
+/* Extra Spacer for Scrolling */
 .scroll-spacer {
   height: 150vh;
 }
 
 /* Animated Background */
+.animated-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .animated-background {
   position: absolute;
   width: 100%;
@@ -85,28 +85,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
-  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  z-index: 100;
 }
 
+/* Each star-link holds a star and its label */
 .star-link {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(-50%, -50%);
-}
-
-.star-link .nav-text {
-  display: none;
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: var(--accent-color);
-  text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
-}
-
-.star-link:hover .nav-text {
-  display: block;
+  cursor: pointer;
 }
 
 .nav-star {
@@ -115,13 +102,12 @@ body {
   background: radial-gradient(circle, var(--accent-color) 30%, #ffffff 70%);
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 170, 255, 0.7);
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-              box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
+  z-index: 101;
 }
 
 .nav-star:hover {
@@ -129,19 +115,25 @@ body {
   transform: scale(1.4);
 }
 
-/* Content Containers (for inner pages) */
-.content-container {
-  padding: 60px 20px;
-  max-width: 900px;
-  margin: 0 auto;
+.nav-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
 }
 
-/* Projects List */
-.projects-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 40px 20px;
+/* Page Header for inner pages */
+.page-header {
+  text-align: center;
+  margin-top: 40px;
+  color: var(--accent-color);
+}
+
+/* Project Cards & List Container */
+.list-container {
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
 }
 
 .project-card {
@@ -149,11 +141,9 @@ body {
   backdrop-filter: blur(15px);
   padding: 20px;
   border-radius: 10px;
-  transition: transform var(--transition-duration) ease-in-out,
-              box-shadow var(--transition-duration) ease-in-out;
+  transition: transform var(--transition-duration) ease-in-out, box-shadow var(--transition-duration) ease-in-out;
   cursor: pointer;
-  max-width: 600px;
-  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 .project-card:hover {
@@ -184,7 +174,7 @@ body {
   overflow: hidden;
 }
 
-/* Contact Page */
+/* Contact Page Styles */
 .contact-container {
   display: flex;
   flex-direction: column;
@@ -202,7 +192,6 @@ body {
   text-shadow: 0 0 15px rgba(0, 170, 255, 0.7);
 }
 
-/* Contact Form */
 .contact-form {
   background: rgba(15, 15, 15, 0.9);
   padding: 30px;
@@ -252,8 +241,7 @@ body {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out,
-              box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   box-shadow: 0 0 12px rgba(0, 170, 255, 0.5);
   text-transform: uppercase;
 }
