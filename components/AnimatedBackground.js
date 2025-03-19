@@ -2,38 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
-// Drift variants based on base positions (in percentages)
-const navStarVariants = (baseX, baseY) => ({
-  animate: {
-    top: [
-      baseY,
-      `${parseFloat(baseY)}% + 5%`,
-      baseY,
-      `${parseFloat(baseY)}% - 5%`,
-      baseY
-    ],
-    left: [
-      baseX,
-      `${parseFloat(baseX)}% + 5%`,
-      baseX,
-      `${parseFloat(baseX)}% - 5%`,
-      baseX
-    ],
-  },
-  transition: {
-    duration: 10,
-    ease: "easeInOut",
-    repeat: Infinity,
-    repeatType: "mirror",
-  },
-});
-
 export default function AnimatedBackground({ showStars }) {
   const canvasRef = useRef(null);
   const router = useRouter();
   const [hoveredStar, setHoveredStar] = useState(null);
 
-  // Navigation stars for Blog, About Me, Contact, Projects, Involvement, and Home.
+  // Navigation stars for all pages
   const navigationStars = [
     { x: "10%", y: "20%", text: "Blog", link: "/blog" },
     { x: "30%", y: "40%", text: "About Me", link: "/about" },
@@ -96,23 +70,36 @@ export default function AnimatedBackground({ showStars }) {
       <canvas ref={canvasRef} className="animated-background" />
       {showStars && (
         <div className="stars-container">
-          {navigationStars.map((star, index) => (
-            <motion.div
-              key={index}
-              className="nav-star"
-              style={{ top: star.y, left: star.x }}
-              initial={{ opacity: 0 }}
-              animate={navStarVariants(star.x, star.y).animate}
-              transition={navStarVariants(star.x, star.y).transition}
-              onMouseEnter={() => setHoveredStar(index)}
-              onMouseLeave={() => setHoveredStar(null)}
-              onClick={() => router.push(star.link)}
-            >
-              {hoveredStar === index && (
-                <span className="nav-text">{star.text}</span>
-              )}
-            </motion.div>
-          ))}
+          {navigationStars.map((star, index) => {
+            // Convert percentage strings to numbers
+            const baseX = parseFloat(star.x);
+            const baseY = parseFloat(star.y);
+            return (
+              <motion.div
+                key={index}
+                className="nav-star"
+                style={{ top: star.y, left: star.x }}
+                initial={{ opacity: 0 }}
+                animate={{
+                  top: [`${baseY}%`, `${baseY + 5}%`, `${baseY}%`, `${baseY - 5}%`, `${baseY}%`],
+                  left: [`${baseX}%`, `${baseX + 5}%`, `${baseX}%`, `${baseX - 5}%`, `${baseX}%`],
+                }}
+                transition={{
+                  duration: 10,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                }}
+                onMouseEnter={() => setHoveredStar(index)}
+                onMouseLeave={() => setHoveredStar(null)}
+                onClick={() => router.push(star.link)}
+              >
+                {hoveredStar === index && (
+                  <span className="nav-text">{star.text}</span>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       )}
     </div>
