@@ -12,7 +12,6 @@
   --star-size: 30px; /* Increased size for clearer buttons */
 }
 
-/* Base Styles */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -21,7 +20,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Remove header completely */
+/* Remove header completely (if you have a .header class) */
 .header {
   display: none;
 }
@@ -46,7 +45,7 @@ body {
   font-size: 4rem;
   font-weight: 700;
   color: #fff;
-  text-shadow: 0px 0px 20px rgba(0, 170, 255, 0.8);
+  text-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
   margin-bottom: 10px;
 }
 
@@ -54,12 +53,29 @@ body {
   font-size: 1.5rem;
   color: #ccc;
   margin-top: 10px;
-  text-shadow: 0px 0px 10px rgba(0, 170, 255, 0.6);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
 }
 
 /* Extra Spacer for Scrolling */
 .scroll-spacer {
   height: 150vh;
+}
+
+/* Animated Background */
+.animated-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.animated-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* allow clicks to pass through */
+  z-index: -1;
 }
 
 /* Stars Container */
@@ -80,17 +96,41 @@ body {
   pointer-events: auto; /* enable interaction */
 }
 
+/* Star Link Container (for label + star) */
+.star-link {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.star-link .nav-text {
+  display: none;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.6);
+}
+
+.star-link:hover .nav-text {
+  display: block;
+}
+
 /* Interactive Navigation Stars */
 .nav-star {
-  position: absolute;
   width: var(--star-size);
   height: var(--star-size);
   background: radial-gradient(circle, var(--accent-color) 30%, #ffffff 70%);
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 170, 255, 0.7);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
 }
 
 .nav-star:hover {
@@ -98,38 +138,13 @@ body {
   transform: scale(1.4);
 }
 
-/* Navigation Star Label */
-.nav-text {
-  position: absolute;
-  left: 50%;
-  top: -30px;
-  transform: translateX(-50%);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--accent-color);
-  text-shadow: 0px 0px 12px rgba(0, 170, 255, 0.8);
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Content Containers */
+/* Projects, Involvement, etc. */
 .content-container {
   padding: 60px 20px;
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* Projects */
 .projects-container {
   display: flex;
   flex-direction: column;
@@ -138,7 +153,6 @@ body {
   padding: 40px 20px;
 }
 
-/* Project Card */
 .project-card {
   background: var(--card-bg);
   backdrop-filter: blur(15px);
@@ -210,7 +224,6 @@ body {
   gap: 20px;
 }
 
-/* Form Group */
 .form-group {
   display: flex;
   flex-direction: column;
