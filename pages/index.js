@@ -7,7 +7,6 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // When scrolling more than 50px, show the stars.
       setShowStars(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);

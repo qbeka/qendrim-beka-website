@@ -2,6 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
+// Drift variant for stars based on their base positions (as percentages)
+const navStarVariants = (baseX, baseY) => ({
+  animate: {
+    top: [`${baseY}`, `${parseFloat(baseY) + 5}%`, `${baseY}`, `${parseFloat(baseY) - 5}%`, `${baseY}`],
+    left: [`${baseX}`, `${parseFloat(baseX) + 5}%`, `${baseX}`, `${parseFloat(baseX) - 5}%`, `${baseX}`],
+  },
+  transition: {
+    duration: 10,
+    ease: "easeInOut",
+    repeat: Infinity,
+    repeatType: "mirror",
+  },
+});
+
 export default function AnimatedBackground({ showStars }) {
   const canvasRef = useRef(null);
   const router = useRouter();
@@ -71,25 +85,16 @@ export default function AnimatedBackground({ showStars }) {
       {showStars && (
         <div className="stars-container">
           {navigationStars.map((star, index) => {
-            // Convert percentage strings to numbers
-            const baseX = parseFloat(star.x);
-            const baseY = parseFloat(star.y);
+            const baseX = star.x;
+            const baseY = star.y;
             return (
               <motion.div
                 key={index}
                 className="nav-star"
                 style={{ top: star.y, left: star.x }}
                 initial={{ opacity: 0 }}
-                animate={{
-                  top: [`${baseY}%`, `${baseY + 5}%`, `${baseY}%`, `${baseY - 5}%`, `${baseY}%`],
-                  left: [`${baseX}%`, `${baseX + 5}%`, `${baseX}%`, `${baseX - 5}%`, `${baseX}%`],
-                }}
-                transition={{
-                  duration: 10,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                }}
+                animate={navStarVariants(baseX, baseY).animate}
+                transition={navStarVariants(baseX, baseY).transition}
                 onMouseEnter={() => setHoveredStar(index)}
                 onMouseLeave={() => setHoveredStar(null)}
                 onClick={() => router.push(star.link)}

@@ -9,7 +9,7 @@
   --input-bg: #1a1a1a;
   --input-border: #333;
   --star-hover-glow: rgba(0, 170, 255, 1);
-  --star-size: 16px;
+  --star-size: 30px; /* Increased size for clearer buttons */
 }
 
 /* Base Styles */
@@ -87,6 +87,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 100;
+  /* Removed pointer-events: none so that stars are clickable */
 }
 
 /* Interactive Navigation Stars */
